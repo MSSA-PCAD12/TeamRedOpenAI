@@ -1,0 +1,20 @@
+﻿@page "/openai"
+@rendermode InteractiveServer
+
+<PageTitle>OpenAI</PageTitle>
+
+<h3>OpenAI Query</h3>
+
+<input placeholder="Input query" @bind="newQuery" />
+<button class="btn btn-primary" @onclick="SemanticKernelClient">Send Request</button>
+
+<br />
+
+<h4>Server response:</h4> <p>@serverResponse</p>
+
+@code {
+
+	public string? newQuery;
+	public string? serverResponse;
+
+}
