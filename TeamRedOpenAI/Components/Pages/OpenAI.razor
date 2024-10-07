@@ -1,5 +1,6 @@
 ﻿@page "/openai"
 @rendermode InteractiveServer
+@inject Microsoft.Extensions.Configuration.IConfiguration _config
 
 <PageTitle>OpenAI</PageTitle>
 
@@ -12,10 +13,14 @@
 
 <h4>Server response:</h4> <p>@serverResponse</p>
 
-@inject Microsoft.Extensions.Configuration.IConfiguration _config
 
 @code {
 	@using Microsoft.SemanticKernel;
+	@using Microsoft.SemanticKernel.Connectors.OpenAI;
+	// @using Azure.Identity;
+
+	public string? newQuery;
+	public string? serverResponse;
 
 	private async Task SemanticKernelClient()
 	{
@@ -33,10 +38,27 @@
 			modelId: modelId
 		);
 
+
+		// option with Azure Identity
+		// var kernel = Kernel.CreateBuilder()
+		// 	.AddAzureOpenAIChatCompletion(
+		// 		deploymentName: deploymentName,
+		// 		endpoint: endpoint,
+		// 		credentials: new DefaultAzureCredential()
+		// 	)
+		// 	.Build();
+
 		var kernel = builder.Build();
+
+		var prompt = @"{{input}} " + newQuery;
+
+		var summarize = kernel.CreateFunctionFromPrompt(prompt, executionSettings: new OpenAIPromptExecutionSettings { MaxTokens = 100, Temperature = 0.2 });
+
+		var result = await kernel.InvokeAsync(summarize);
+
+		serverResponse = result.ToString();
 	}
 
-	public string? newQuery;
-	public string? serverResponse;
+	
 
 }
