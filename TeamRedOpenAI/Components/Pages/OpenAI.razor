@@ -12,7 +12,29 @@
 
 <h4>Server response:</h4> <p>@serverResponse</p>
 
+@inject Microsoft.Extensions.Configuration.IConfiguration _config
+
 @code {
+	@using Microsoft.SemanticKernel;
+
+	private async Task SemanticKernelClient()
+	{
+		string deploymentName = _config["DEPLOYMENT_NAME"];
+		string endpoint = _config["ENDPOINT"];
+		string apiKey = _config["API_KEY"];
+		string modelId = _config["MODEL_ID"];
+
+
+		var builder = Kernel.CreateBuilder();
+		builder.Services.AddAzureOpenAIChatCompletion(
+			deploymentName: deploymentName,
+			endpoint: endpoint,
+			apiKey: apiKey,
+			modelId: modelId
+		);
+
+		var kernel = builder.Build();
+	}
 
 	public string? newQuery;
 	public string? serverResponse;
