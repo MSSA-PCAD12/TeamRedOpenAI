@@ -24,10 +24,11 @@
 
 	private async Task SemanticKernelClient()
 	{
-		string deploymentName = _config["DEPLOYMENT_NAME"];
+		// for deployment
+		string deploymentName = _config["DEPLOYMENT-Name"];
 		string endpoint = _config["ENDPOINT"];
-		string apiKey = _config["API_KEY"];
-		string modelId = _config["MODEL_ID"];
+		string apiKey = _config["API-KEY"];
+		string modelId = _config["MODEL-ID"];
 
 
 		var builder = Kernel.CreateBuilder();
@@ -50,15 +51,12 @@
 
 		var kernel = builder.Build();
 
-		var prompt = @"{{input}} " + newQuery;
+		var prompt = @"{{$input}} " + newQuery;
 
 		var summarize = kernel.CreateFunctionFromPrompt(prompt, executionSettings: new OpenAIPromptExecutionSettings { MaxTokens = 100, Temperature = 0.2 });
-
+		
 		var result = await kernel.InvokeAsync(summarize);
 
 		serverResponse = result.ToString();
 	}
-
-	
-
 }
