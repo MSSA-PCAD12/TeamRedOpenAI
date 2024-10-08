@@ -1,6 +1,12 @@
+using Azure.Identity;
 using TeamRedOpenAI.Components;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Configuration.AddAzureAppConfiguration(options =>
+	options.Connect(
+		new Uri(builder.Configuration["AppConfig:Endpoint"]),
+		new ManagedIdentityCredential()));
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
