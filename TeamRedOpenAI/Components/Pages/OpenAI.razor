@@ -25,10 +25,10 @@
 	private async Task SemanticKernelClient()
 	{
 		// for deployment
-		string deploymentName = _config["DEPLOYMENT-Name"];
+		string deploymentName = _config["DEPLOYMENT_NAME"];
 		string endpoint = _config["ENDPOINT"];
-		string apiKey = _config["API-KEY"];
-		string modelId = _config["MODEL-ID"];
+		string apiKey = _config["API_KEY"];
+		string modelId = _config["MODEL_ID"];
 
 
 		var builder = Kernel.CreateBuilder();
